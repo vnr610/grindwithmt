@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grind With MT</title>
+
+    <!-- DNS Prefetch & Preconnect for Performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts with font-display swap for faster rendering -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (via CDN) - Must load before config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Anime.js - Defer loading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+
+    <!-- Lucide Icons - Defer loading -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+
+    <!-- INLINED SCRIPT: Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0f228d',
+                            dark: '#0a1761',
+                            light: '#f0f0f0',
+                            accent: '#3b82f6'
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            text: '#f1f5f9'
+                        }
+                    },
+                    fontFamily: {
+                        quantico: ['Quantico', 'sans-serif'],
+                        nunito: ['Nunito', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- INLINED STYLES: Custom CSS -->
+    <style>
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
+
+        /* Animation Helpers - Optimized with will-change */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(20px);
+            will-change: opacity, transform;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .reveal-element.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* GPU acceleration for animations */
+        .blog-card,
+        .hero-section,
+        .cta-section {
+            will-change: transform;
+        }
+        
+        /* Reduce repaints */
+        nav {
+            contain: layout style paint;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+
+<body
+    class="font-nunito text-gray-800 dark:text-dark-text bg-gray-100 dark:bg-dark-bg antialiased flex flex-col min-h-screen transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="bg-brand-blue dark:bg-slate-900 text-white shadow-lg sticky top-0 z-40 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform">
+                    <i data-lucide="code-2" class="w-8 h-8 text-white dark:text-blue-400"></i>
+                    <h1 class="font-quantico font-bold text-2xl tracking-wide">Grind With MT</h1>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-6">
+                    <div class="flex items-baseline space-x-8 font-quantico">
+                        <a href="#"
+                            class="bg-white text-brand-blue dark:bg-blue-600 dark:text-white hover:bg-gray-100 dark:hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-bold transition-all duration-200 shadow-md transform hover:-translate-y-0.5">Home</a>
+                        <a href="/Menu/topic.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Topic</a>
+                        <a href="/Menu/about.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">About</a>
+                        <a href="/Menu/contact.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Contact</a>
+                        <a href="/Menu/blog.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Blog</a>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-brand-dark dark:hover:bg-slate-700 transition-colors focus:outline-none">
+                        <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="flex items-center gap-4 md:hidden">
+                    <button id="theme-toggle-mobile"
+                        class="p-2 rounded-full hover:bg-brand-dark transition-colors focus:outline-none">
+                        <i id="theme-icon-mobile" data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                    <button type="button" onclick="toggleMobileMenu()"
+                        class="inline-flex items-center justify-center p-2 rounded-md hover:bg-brand-dark focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-brand-dark dark:bg-slate-800 border-t border-blue-800 dark:border-slate-700"
+            id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 font-quantico">
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium bg-blue-800 dark:bg-blue-700">Home</a>
+                <a href="/Menu/topic.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Topic</a>
+                <a href="/Menu/about.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">About</a>
+                <a href="/Menu/contact.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Contact</a>
+                <a href="/Menu/blog.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+
+        <!-- Hero Section -->
+        <div
+            class="bg-white dark:bg-dark-card rounded-2xl shadow-xl overflow-hidden mb-12 transform hover:shadow-2xl transition-all duration-300 reveal-element hero-section">
+            <div
+                class="relative h-48 bg-gradient-to-r from-brand-blue to-blue-600 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
+                <div
+                    class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+                </div>
+                <div class="text-center z-10 p-4">
+                    <h1 class="font-quantico text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-md">Welcome to
+                        Grind With MT</h1>
+                    <p class="text-blue-100 dark:text-blue-200 text-lg md:text-xl font-nunito max-w-2xl mx-auto">Sharing
+                        my coding journey, one bug at a time.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog/Grid Section -->
+        <div class="mb-8">
+            <!-- Header + Show All link -->
+            <div class="flex justify-between items-end mb-6 reveal-element section-title">
+                <h2
+                    class="font-quantico text-2xl font-bold text-brand-blue dark:text-blue-400 border-l-4 border-brand-blue dark:border-blue-400 pl-3">
+                    JavaScript</h2>
+                <!-- Added ID for Show All click event -->
+                <a href="#" id="show-all-js-btn"
+                    class="text-sm font-bold text-brand-blue dark:text-blue-400 hover:text-brand-dark dark:hover:text-blue-300 transition-colors flex items-center gap-1 group">
+                    Show All <i data-lucide="arrow-right"
+                        class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Card 1: Strings -->
+                <div class="group blog-card reveal-element h-full">
+                    <div
+                        class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 h-full border border-gray-100 dark:border-slate-700 flex flex-col transform hover:-translate-y-1">
+                        <div class="h-2 bg-green-500"></div>
+                        <div class="p-6 flex-grow flex flex-col items-center text-center">
+                            <div
+                                class="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-full flex items-center justify-center mb-4 text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="align-left" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="font-quantico text-2xl font-bold text-gray-800 dark:text-white mb-2">Strings</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm flex-grow">Mastering string
+                                manipulation, regex patterns, and parsing data effectively.</p>
+                            <button onclick="openJsModal('tab-strings')"
+                                class="text-brand-blue dark:text-blue-400 font-bold text-sm uppercase tracking-wider hover:text-brand-dark dark:hover:text-blue-300 transition-colors flex items-center gap-1 group-hover:gap-2 cursor-pointer focus:outline-none">
+                                Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Conditions -->
+                <div class="group blog-card reveal-element h-full">
+                    <div
+                        class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 h-full border border-gray-100 dark:border-slate-700 flex flex-col transform hover:-translate-y-1">
+                        <div class="h-2 bg-yellow-400"></div>
+                        <div class="p-6 flex-grow flex flex-col items-center text-center">
+                            <div
+                                class="w-16 h-16 bg-yellow-50 dark:bg-yellow-900/20 rounded-full flex items-center justify-center mb-4 text-yellow-600 dark:text-yellow-400 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="git-branch" class="w-8 h-8"></i>
+                            </div>
+                            <h2 class="font-quantico text-2xl font-bold text-gray-800 dark:text-white mb-2">Conditions
+                            </h2>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm flex-grow">Control logic flow
+                                with if-else statements and switch cases.</p>
+                            <button onclick="openJsModal('tab-conditions')"
+                                class="text-brand-blue dark:text-blue-400 font-bold text-sm uppercase tracking-wider hover:text-brand-dark dark:hover:text-blue-300 transition-colors flex items-center gap-1 group-hover:gap-2 cursor-pointer focus:outline-none">
+                                Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Loops -->
+                <div class="group blog-card reveal-element h-full">
+                    <div
+                        class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 h-full border border-gray-100 dark:border-slate-700 flex flex-col transform hover:-translate-y-1">
+                        <div class="h-2 bg-purple-500"></div>
+                        <div class="p-6 flex-grow flex flex-col items-center text-center">
+                            <div
+                                class="w-16 h-16 bg-purple-50 dark:bg-purple-900/20 rounded-full flex items-center justify-center mb-4 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="repeat" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="font-quantico text-2xl font-bold text-gray-800 dark:text-white mb-2">Loops
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm flex-grow">Automate repetitive
+                                tasks using for, while, and do-while iteration structures.</p>
+                            <button onclick="openJsModal('tab-loops')"
+                                class="text-brand-blue dark:text-blue-400 font-bold text-sm uppercase tracking-wider hover:text-brand-dark dark:hover:text-blue-300 transition-colors flex items-center gap-1 group-hover:gap-2 cursor-pointer focus:outline-none">
+                                Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HIDDEN CARD: Functions (Revealed on 'Show All') -->
+                <div id="more-js-card" class="group blog-card hidden h-full">
+                    <div
+                        class="bg-white dark:bg-dark-card rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 h-full border border-gray-100 dark:border-slate-700 flex flex-col transform hover:-translate-y-1">
+                        <!-- Red color for Functions -->
+                        <div class="h-2 bg-red-600"></div>
+                        <div class="p-6 flex-grow flex flex-col items-center text-center">
+                            <div
+                                class="w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="braces" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="font-quantico text-2xl font-bold text-gray-800 dark:text-white mb-2">Functions
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm flex-grow">Reusable blocks of code,
+                                arrow functions, and scope management.</p>
+                            <button onclick="openJsModal('tab-functions')"
+                                class="text-brand-blue dark:text-blue-400 font-bold text-sm uppercase tracking-wider hover:text-brand-dark dark:hover:text-blue-300 transition-colors flex items-center gap-1 group-hover:gap-2 cursor-pointer focus:outline-none">
+                                Learn More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Call to Action Area -->
+        <div
+            class="bg-brand-dark dark:bg-slate-800 rounded-xl p-8 md:p-12 text-center text-white reveal-element cta-section relative overflow-hidden shadow-lg">
+            <div class="relative z-10">
+                <h2 class="font-quantico text-2xl md:text-3xl font-bold mb-4">Join the Grind</h2>
+                <p class="font-nunito text-blue-200 dark:text-slate-300 mb-8 max-w-xl mx-auto">Stay updated with the
+                    latest tutorials and coding challenges. Let's learn together.</p>
+
+                <!-- UPDATED: Email Input with Validation -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <!-- Added id="newsletter-email" and border styles -->
+                    <input type="email" id="newsletter-email" placeholder="Enter your email address"
+                        class="px-5 py-3 rounded-full text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-0 border-2 border-transparent w-full sm:w-80 shadow-inner transition-colors duration-200">
+                    <button
+                        class="bg-white text-brand-dark dark:text-slate-900 font-bold py-3 px-8 rounded-full hover:bg-blue-50 transition-colors shadow-lg w-full sm:w-auto">Subscribe</button>
+                
+                </div>
+            </div>
+            <!-- Decorative circle -->
+            <div
+                class="absolute -top-24 -right-24 w-64 h-64 bg-brand-blue dark:bg-slate-700 rounded-full opacity-50 blur-3xl">
+            </div>
+            <div
+                class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500 dark:bg-blue-900 rounded-full opacity-50 blur-3xl">
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="bg-brand-blue dark:bg-slate-900 text-white py-8 mt-auto border-t border-transparent dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0 text-center md:text-left">
+                <p class="font-quantico font-bold text-lg">Grind With MT</p>
+                <p class="text-blue-300 dark:text-slate-400 text-sm">© 2025 All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="github" class="w-5 h-5"></i></a>
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="linkedin" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- JAVASCRIPT MODAL -->
+    <div id="js-modal" class="fixed inset-0 z-[60] hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm"
+            onclick="closeJsModal()"></div>
+
+        <!-- Modal Panel -->
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl border border-gray-200 dark:border-slate-700">
+
+                <!-- Modal Header -->
+                <div
+                    class="bg-gray-50 dark:bg-slate-900 px-4 py-3 sm:px-6 flex justify-between items-center border-b border-gray-200 dark:border-slate-700">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="javascript" class="text-yellow-500 w-6 h-6"></i>
+                        <h3 class="text-lg font-bold leading-6 text-gray-900 dark:text-white font-quantico"
+                            id="modal-title">JavaScript Fundamentals</h3>
+                    </div>
+                    <button type="button"
+                        class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+                        onclick="closeJsModal()">
+                        <span class="sr-only">Close</span>
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Body with Tabs -->
+                <div class="flex flex-col md:flex-row h-[60vh] md:h-[500px]">
+                    <!-- Sidebar Tabs -->
+                    <div
+                        class="w-full md:w-1/4 bg-gray-50 dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 overflow-y-auto custom-scrollbar">
+                        <nav class="flex flex-col p-2 space-y-1" aria-label="Tabs">
+                            <button onclick="switchTab('tab-strings')" id="btn-tab-strings"
+                                class="tab-btn w-full text-left px-4 py-3 rounded-md text-sm font-medium bg-brand-blue text-white shadow-sm flex items-center justify-between group">
+                                <span>Strings</span>
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 opacity-100 group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                            <button onclick="switchTab('tab-conditions')" id="btn-tab-conditions"
+                                class="tab-btn w-full text-left px-4 py-3 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white flex items-center justify-between group">
+                                <span>Conditions</span>
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                            </button>
+                            <button onclick="switchTab('tab-loops')" id="btn-tab-loops"
+                                class="tab-btn w-full text-left px-4 py-3 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white flex items-center justify-between group">
+                                <span>Loops</span>
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                            </button>
+                            <button onclick="switchTab('tab-functions')" id="btn-tab-functions"
+                                class="tab-btn w-full text-left px-4 py-3 rounded-md text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white flex items-center justify-between group">
+                                <span>Functions</span>
+                                <i data-lucide="chevron-right"
+                                    class="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div
+                        class="w-full md:w-3/4 p-6 overflow-y-auto custom-scrollbar bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200">
+
+                        <!-- String Tab Content -->
+                        <div id="tab-strings" class="tab-content block animate-fade-in">
+                            <h4 class="text-xl font-bold mb-4 font-quantico text-brand-blue dark:text-blue-400">Working
+                                with Strings</h4>
+                            <p class="mb-4 text-sm leading-relaxed">Strings are used for storing and manipulating text.
+                                JavaScript provides many helpful methods to handle string data efficiently.</p>
+
+                            <h5 class="font-bold text-sm uppercase text-gray-500 dark:text-gray-400 mb-2">Common Methods
+                            </h5>
+                            <ul class="list-disc list-inside space-y-2 mb-6 text-sm ml-2">
+                                <li><strong>.length</strong>: Returns the length of the string.</li>
+                                <li><strong>.toUpperCase()</strong>: Converts string to upper case.</li>
+                                <li><strong>.slice(start, end)</strong>: Extracts a part of a string.</li>
+                                <li><strong>.replace()</strong>: Replaces a specified value with another value.</li>
+                            </ul>
+
+                            <h5 class="font-bold text-sm uppercase text-gray-500 dark:text-gray-400 mb-2">Example Code
+                            </h5>
+                            <pre><code class="language-javascript">const text = "Hello World";
+                                                                    console.log(text.length); // 11
+                                                                    console.log(text.toUpperCase()); // "HELLO WORLD"
+                                                                    let part = text.slice(0, 5); // "Hello"
+</code></pre>
+                        </div>
+
+                        <!-- Conditions Tab Content -->
+                        <div id="tab-conditions" class="tab-content hidden animate-fade-in">
+                            <h4 class="text-xl font-bold mb-4 font-quantico text-green-600 dark:text-green-400">
+                                Conditional Logic</h4>
+                            <p class="mb-4 text-sm leading-relaxed">Conditional statements are used to perform different
+                                actions based on different conditions.</p>
+
+                            <h5 class="font-bold text-sm uppercase text-gray-500 dark:text-gray-400 mb-2">Types</h5>
+                            <ul class="list-disc list-inside space-y-2 mb-6 text-sm ml-2">
+                                <li><strong>if</strong>: Specifies a block of code to be executed if a condition is
+                                    true.</li>
+                                <li><strong>else</strong>: Specifies a block of code to be executed if the same
+                                    condition is false.</li>
+                                <li><strong>else if</strong>: Specifies a new condition to test, if the first condition
+                                    is false.</li>
+                                <li><strong>switch</strong>: Selects one of many blocks of code to be executed.</li>
+                            </ul>
+
+                            <h5 class="font-bold text-sm uppercase text-gray-500 dark:text-gray-400 mb-2">Example Code
+                            </h5>
+                            <pre><code class="language-javascript">let hour = 14;
+                                                                    if (hour < 12) {
+                                                                    console.log("Good morning");
+                                                                    } else if (hour < 18) {
+                                                                    console.log("Good afternoon");
+                                                                    } else {
+                                                                    console.log("Good evening");
+                                                                    }
+</code></pre>
+                        </div>
+
+                        <!-- Loops Tab Content -->
+                        <div id="tab-loops" class="tab-content hidden animate-fade-in">
+                            <h4 class="text-xl font-bold mb-4 font-quantico text-purple-600 dark:text-purple-400">Loops
+                                & Iteration</h4>
+                            <p class="mb-4 text-sm leading-relaxed">Loops are handy, if you want to run the same code
+                                over and over again, each time with a different value.</p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div
+                                    class="bg-gray-50 dark:bg-slate-700 p-3 rounded border border-gray-200 dark:border-slate-600">
+                                    <strong class="block text-brand-blue dark:text-blue-300 mb-1">For Loop</strong>
+                                    <p class="text-xs">Loops through a block of code a number of times.</p>
+                                </div>
+                                <div
+                                    class="bg-gray-50 dark:bg-slate-700 p-3 rounded border border-gray-200 dark:border-slate-600">
+                                    <strong class="block text-brand-blue dark:text-blue-300 mb-1">While Loop</strong>
+                                    <p class="text-xs">Loops through a block of code while a specified condition is
+                                        true.</p>
+                                </div>
+                            </div>
+
+                            <h5 class="font-bold text-sm uppercase text-gray-500 dark:text-gray-400 mb-2">Example Code
+                            </h5>
+                            <pre><code class="language-javascript">const cars = ["BMW", "Volvo", "Saab", "Ford"];
+                                                                    let text = "";
+
+                                                                    for (let i = 0; i < cars.length; i++) {
+                                                                    text += cars[i] + "\n";
+                                                                    }
+</code></pre>
+                        </div>
+
+                        <!-- Functions Tab Content -->
+                        <div id="tab-functions" class="tab-content hidden animate-fade-in">
+                            <h4 class="text-xl font-bold mb-4 font-quantico text-red-600 dark:text-red-400">JavaScript
+                                Functions</h4>
+                            <p class="mb-4 text-sm leading-relaxed">A JavaScript function is a block of code designed to
+                                perform a particular task. A function is executed when "something" invokes it (calls
+                                it).</p>
+
+                            <h5 class="font-bold text-sm uppercase text-gray-500 dark:text-gray-400 mb-2">Arrow
+                                Functions (ES6)</h5>
+                            <p class="text-sm mb-4">Arrow functions allow for a shorter syntax for writing function
+                                expressions.</p>
+
+                            <h5 class="font-bold text-sm uppercase text-gray-500 dark:text-gray-400 mb-2">Example Code
+                            </h5>
+                            <pre><code class="language-javascript">// Traditional
+                                                                    function add(a, b) {
+                                                                    return a + b;
+                                                                    }
+
+                                                                    // Arrow Function
+                                                                    const multiply = (x, y) => x * y;
+
+                                                                    console.log(multiply(5, 5)); // 25
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main Script - Defer for non-blocking load -->
+    <script src="/script.js" defer></script>
+</body>
+
+</html>

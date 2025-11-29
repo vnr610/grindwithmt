@@ -1,0 +1,26 @@
+/* Optimized CSS - Minified and Performance Enhanced */
+
+/* Custom Scrollbar - GPU accelerated */
+.custom-scrollbar::-webkit-scrollbar{width:8px}
+.custom-scrollbar::-webkit-scrollbar-track{background:rgba(0,0,0,.05)}
+.custom-scrollbar::-webkit-scrollbar-thumb{background-color:#cbd5e1;border-radius:20px;will-change:background-color}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb{background-color:#475569}
+
+/* Animation Helpers - Optimized with will-change and transitions */
+.reveal-element{opacity:0;transform:translateY(20px);will-change:opacity,transform;transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal-element.revealed{opacity:1;transform:translateY(0)}
+
+/* GPU acceleration for animated elements */
+.blog-card,.hero-section,.cta-section{will-change:transform}
+
+/* Reduce repaints with CSS containment */
+nav{contain:layout style paint}
+
+/* Code Block Styling - Optimized */
+pre{background:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:.5rem;overflow-x:auto;font-family:'Courier New',Courier,monospace;contain:layout style}
+
+/* Performance: Reduce layout shifts */
+img{max-width:100%;height:auto;display:block}
+
+/* Optimize font rendering */
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}

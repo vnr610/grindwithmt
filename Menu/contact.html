@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Grind With MT</title>
+
+    <!-- DNS Prefetch & Preconnect for Performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts with font-display swap for faster rendering -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (via CDN) - Must load before config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Anime.js - Defer loading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+
+    <!-- Lucide Icons - Defer loading -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+
+    <!-- INLINED SCRIPT: Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0f228d',
+                            dark: '#0a1761',
+                            light: '#f0f0f0',
+                            accent: '#3b82f6'
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            text: '#f1f5f9'
+                        }
+                    },
+                    fontFamily: {
+                        quantico: ['Quantico', 'sans-serif'],
+                        nunito: ['Nunito', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- INLINED STYLES: Custom CSS -->
+    <style>
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
+
+        /* Animation Helpers - Optimized with will-change */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(20px);
+            will-change: opacity, transform;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .reveal-element.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* GPU acceleration for animations */
+        .blog-card,
+        .hero-section,
+        .cta-section {
+            will-change: transform;
+        }
+        
+        /* Reduce repaints */
+        nav {
+            contain: layout style paint;
+        }
+
+        /* Floating Label Effect */
+        .floating-input:focus ~ label,
+        .floating-input:not(:placeholder-shown) ~ label {
+            transform: translateY(-1.5rem) scale(0.85);
+            color: #3b82f6; /* brand-accent */
+        }
+    </style>
+</head>
+
+<body
+    class="font-nunito text-gray-800 dark:text-dark-text bg-gray-100 dark:bg-dark-bg antialiased flex flex-col min-h-screen transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="bg-brand-blue dark:bg-slate-900 text-white shadow-lg sticky top-0 z-40 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="home.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform">
+                    <i data-lucide="code-2" class="w-8 h-8 text-white dark:text-blue-400"></i>
+                    <h1 class="font-quantico font-bold text-2xl tracking-wide">Grind With MT</h1>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-6">
+                    <div class="flex items-baseline space-x-8 font-quantico">
+                        <a href="../home.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Home</a>
+                        <a href="topic.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Topic</a>
+                        <a href="about.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">About</a>
+                        <!-- Active Contact Link -->
+                        <a href="#"
+                            class="bg-white text-brand-blue dark:bg-blue-600 dark:text-white hover:bg-gray-100 dark:hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-bold transition-all duration-200 shadow-md transform hover:-translate-y-0.5">Contact</a>
+                        <a href="blog.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Blog</a>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-brand-dark dark:hover:bg-slate-700 transition-colors focus:outline-none">
+                        <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="flex items-center gap-4 md:hidden">
+                    <button id="theme-toggle-mobile"
+                        class="p-2 rounded-full hover:bg-brand-dark transition-colors focus:outline-none">
+                        <i id="theme-icon-mobile" data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                    <button type="button" onclick="toggleMobileMenu()"
+                        class="inline-flex items-center justify-center p-2 rounded-md hover:bg-brand-dark focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-brand-dark dark:bg-slate-800 border-t border-blue-800 dark:border-slate-700"
+            id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 font-quantico">
+                <a href="../home.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Home</a>
+                <a href="topic.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Topic</a>
+                <a href="about.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">About</a>
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium bg-blue-800 dark:bg-blue-700">Contact</a>
+                <a href="blog.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+
+        <!-- Header Section -->
+        <div class="text-center mb-12 reveal-element hero-section">
+            <h1 class="font-quantico text-4xl md:text-5xl font-bold text-brand-blue dark:text-white mb-4">Let's Connect</h1>
+            <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
+                Have a project idea, a bug to report, or just want to talk code? I'm always open to discussing new opportunities and collaborations.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+
+            <!-- Contact Information Column -->
+            <div class="space-y-8 reveal-element">
+                <!-- Info Card -->
+                <div class="bg-white dark:bg-dark-card p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+                    
+                    <h2 class="font-quantico text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                        <i data-lucide="contact" class="text-brand-accent"></i> Contact Details
+                    </h2>
+
+                    <div class="space-y-6">
+                        <!-- Email 1 -->
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-blue-50 dark:bg-slate-800 rounded-lg text-brand-blue dark:text-blue-400">
+                                <i data-lucide="mail" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 dark:text-white text-sm uppercase tracking-wide">Primary Email</h3>
+                                <a href="mailto:bbvnr610@proton.me" class="text-gray-600 dark:text-gray-300 hover:text-brand-blue dark:hover:text-blue-400 transition-colors break-all">
+                                    bbvnr610@proton.me
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Email 2 -->
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-purple-50 dark:bg-slate-800 rounded-lg text-purple-600 dark:text-purple-400">
+                                <i data-lucide="inbox" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 dark:text-white text-sm uppercase tracking-wide">General Inquiries</h3>
+                                <a href="mailto:grindwithmt@gmail.com" class="text-gray-600 dark:text-gray-300 hover:text-brand-blue dark:hover:text-blue-400 transition-colors break-all">
+                                    grindwithmt@gmail.com
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Location (Generic/Abstract) -->
+                        <div class="flex items-start gap-4">
+                            <div class="p-3 bg-green-50 dark:bg-slate-800 rounded-lg text-green-600 dark:text-green-400">
+                                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 dark:text-white text-sm uppercase tracking-wide">Base of Operations</h3>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Kathmandu, Nepal <span class="text-xs text-gray-400">(GMT+5:45)</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Connect -->
+                <div class="bg-brand-dark dark:bg-slate-800 p-8 rounded-2xl shadow-lg text-white relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h2 class="font-quantico text-2xl font-bold mb-4">Follow the Grind</h2>
+                        <p class="text-blue-200 mb-6 text-sm">Check out my repositories, tweets, and daily coding updates.</p>
+                        <div class="flex gap-4">
+                            <a href="#" class="p-3 bg-white/10 hover:bg-white/20 rounded-lg backdrop-blur-sm transition-all hover:-translate-y-1">
+                                <i data-lucide="github" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#" class="p-3 bg-white/10 hover:bg-white/20 rounded-lg backdrop-blur-sm transition-all hover:-translate-y-1">
+                                <i data-lucide="twitter" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#" class="p-3 bg-white/10 hover:bg-white/20 rounded-lg backdrop-blur-sm transition-all hover:-translate-y-1">
+                                <i data-lucide="linkedin" class="w-6 h-6"></i>
+                            </a>
+                            <a href="#" class="p-3 bg-white/10 hover:bg-white/20 rounded-lg backdrop-blur-sm transition-all hover:-translate-y-1">
+                                <i data-lucide="youtube" class="w-6 h-6"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Decorative Circles -->
+                    <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-brand-accent opacity-20 rounded-full blur-3xl"></div>
+                </div>
+            </div>
+
+            <!-- Contact Form Column -->
+            <div class="bg-white dark:bg-dark-card p-8 rounded-2xl shadow-xl border-t-4 border-brand-blue reveal-element h-fit">
+                <h2 class="font-quantico text-2xl font-bold text-gray-900 dark:text-white mb-6">Send a Message</h2>
+                
+                <form action="#" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Name Input -->
+                        <div class="relative">
+                            <input type="text" id="name" placeholder=" " 
+                                class="floating-input block w-full px-4 py-3 text-gray-900 dark:text-white bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent peer transition-all" />
+                            <label for="name" 
+                                class="absolute left-4 top-3 text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-0 scale-100 origin-[0] peer-focus:left-4 peer-focus:text-brand-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 pointer-events-none">
+                                Your Name
+                            </label>
+                        </div>
+                        
+                        <!-- Email Input -->
+                        <div class="relative">
+                            <input type="email" id="email" placeholder=" " 
+                                class="floating-input block w-full px-4 py-3 text-gray-900 dark:text-white bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent peer transition-all" />
+                            <label for="email" 
+                                class="absolute left-4 top-3 text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-0 scale-100 origin-[0] peer-focus:left-4 peer-focus:text-brand-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 pointer-events-none">
+                                Email Address
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Subject Input -->
+                    <div class="relative">
+                        <select id="subject" 
+                            class="block w-full px-4 py-3 text-gray-900 dark:text-white bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition-all appearance-none cursor-pointer">
+                            <option>Collaboration</option>
+                            <option>Freelance Project</option>
+                            <option>Bug Report</option>
+                            <option>Just saying Hi</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="relative">
+                        <textarea id="message" rows="5" placeholder=" "
+                            class="floating-input block w-full px-4 py-3 text-gray-900 dark:text-white bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent peer transition-all resize-none"></textarea>
+                        <label for="message" 
+                            class="absolute left-4 top-3 text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-0 scale-100 origin-[0] peer-focus:left-4 peer-focus:text-brand-accent peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 pointer-events-none">
+                            Write your message here...
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="button" class="w-full bg-brand-blue hover:bg-brand-dark text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all transform hover:-translate-y-1 hover:shadow-lg flex justify-center items-center gap-2 group">
+                        <span>Send Message</span>
+                        <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="bg-brand-blue dark:bg-slate-900 text-white py-8 mt-auto border-t border-transparent dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0 text-center md:text-left">
+                <p class="font-quantico font-bold text-lg">Grind With MT</p>
+                <p class="text-blue-300 dark:text-slate-400 text-sm">© 2025 All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="github" class="w-5 h-5"></i></a>
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="linkedin" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MAIN SCRIPT -->
+    <script>
+        // --- 1. Dark Mode Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const themeIconMobile = document.getElementById('theme-icon-mobile');
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            updateIcons('moon');
+        } else {
+            document.documentElement.classList.remove('dark');
+            updateIcons('sun');
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+                updateIcons('sun');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+                updateIcons('moon');
+            }
+        }
+
+        function updateIcons(mode) {
+            const iconName = mode === 'moon' ? 'sun' : 'moon';
+            const newIconHtml = `<i data-lucide="${iconName}" class="w-5 h-5"></i>`;
+
+            if (themeToggleBtn) themeToggleBtn.innerHTML = newIconHtml;
+            if (themeToggleMobile) themeToggleMobile.innerHTML = newIconHtml;
+            
+            // Re-render icons after changing innerHTML
+            if(typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+        if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+
+
+        // --- 2. Mobile Menu Logic ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if(menu) menu.classList.toggle('hidden');
+        }
+
+        // --- 3. Animation Logic (Page Load) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Icons
+            lucide.createIcons();
+
+            // Setup Animation Timeline
+            var tl = anime.timeline({
+                easing: 'easeOutExpo',
+                duration: 750
+            });
+
+            tl.add({
+                targets: 'nav',
+                translateY: [-100, 0],
+                opacity: [0, 1],
+                duration: 800
+            })
+            .add({
+                targets: '.hero-section',
+                translateY: [20, 0],
+                opacity: [0, 1],
+                duration: 800
+            }, '-=400')
+            .add({
+                targets: '.reveal-element',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(150),
+                duration: 800
+            }, '-=200');
+        });
+    </script>
+</body>
+</html>

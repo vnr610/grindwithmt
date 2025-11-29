@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Grind With MT</title>
+
+    <!-- DNS Prefetch & Preconnect for Performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts with font-display swap for faster rendering -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (via CDN) - Must load before config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Anime.js - Defer loading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+
+    <!-- Lucide Icons - Defer loading -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+
+    <!-- INLINED SCRIPT: Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0f228d',
+                            dark: '#0a1761',
+                            light: '#f0f0f0',
+                            accent: '#3b82f6'
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            text: '#f1f5f9'
+                        }
+                    },
+                    fontFamily: {
+                        quantico: ['Quantico', 'sans-serif'],
+                        nunito: ['Nunito', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- INLINED STYLES: Custom CSS -->
+    <style>
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #475569;
+        }
+
+        /* Animation Helpers - Optimized with will-change */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(20px);
+            will-change: opacity, transform;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .reveal-element.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* GPU acceleration for animations */
+        .blog-card,
+        .hero-section,
+        .cta-section {
+            will-change: transform;
+        }
+        
+        /* Reduce repaints */
+        nav {
+            contain: layout style paint;
+        }
+
+        /* Timeline Specific Styles */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #3b82f6; /* brand-accent */
+            transform: translateX(-50%);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-line {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="font-nunito text-gray-800 dark:text-dark-text bg-gray-100 dark:bg-dark-bg antialiased flex flex-col min-h-screen transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="bg-brand-blue dark:bg-slate-900 text-white shadow-lg sticky top-0 z-40 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="home.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform">
+                    <i data-lucide="code-2" class="w-8 h-8 text-white dark:text-blue-400"></i>
+                    <h1 class="font-quantico font-bold text-2xl tracking-wide">Grind With MT</h1>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-6">
+                    <div class="flex items-baseline space-x-8 font-quantico">
+                        <a href="../home.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Home</a>
+                        <a href="topic.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Topic</a>
+                        <!-- Active About Link -->
+                        <a href="#"
+                            class="bg-white text-brand-blue dark:bg-blue-600 dark:text-white hover:bg-gray-100 dark:hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-bold transition-all duration-200 shadow-md transform hover:-translate-y-0.5">About</a>
+                        <a href="contact.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Contact</a>
+                        <a href="blog.html"
+                            class="hover:bg-brand-dark dark:hover:bg-slate-800 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Blog</a>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-brand-dark dark:hover:bg-slate-700 transition-colors focus:outline-none">
+                        <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="flex items-center gap-4 md:hidden">
+                    <button id="theme-toggle-mobile"
+                        class="p-2 rounded-full hover:bg-brand-dark transition-colors focus:outline-none">
+                        <i id="theme-icon-mobile" data-lucide="moon" class="w-5 h-5"></i>
+                    </button>
+                    <button type="button" onclick="toggleMobileMenu()"
+                        class="inline-flex items-center justify-center p-2 rounded-md hover:bg-brand-dark focus:outline-none">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-brand-dark dark:bg-slate-800 border-t border-blue-800 dark:border-slate-700"
+            id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 font-quantico">
+                <a href="../home.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Home</a>
+                <a href="topic.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Topic</a>
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-base font-medium bg-blue-800 dark:bg-blue-700">About</a>
+                <a href="contact.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Contact</a>
+                <a href="blog.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-800 dark:hover:bg-slate-700">Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+
+        <!-- Hero Section (About Specific) -->
+        <div class="bg-white dark:bg-dark-card rounded-2xl shadow-xl overflow-hidden mb-16 transform transition-all duration-300 reveal-element hero-section">
+            <div class="relative h-64 bg-gradient-to-r from-gray-900 to-brand-blue dark:from-slate-900 dark:to-slate-800 flex items-center justify-center overflow-hidden">
+                <!-- Decorative Code Background -->
+                <div class="absolute inset-0 opacity-10 font-mono text-xs text-white p-4 leading-relaxed overflow-hidden select-none pointer-events-none">
+                    const grind = true;<br>while(grind) {<br>&nbsp;&nbsp;learn();<br>&nbsp;&nbsp;build();<br>&nbsp;&nbsp;fail();<br>&nbsp;&nbsp;succeed();<br>}
+                </div>
+                
+                <div class="text-center z-10 p-6">
+                    <div class="inline-block p-3 rounded-full bg-white/10 backdrop-blur-sm mb-4">
+                         <i data-lucide="terminal" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h1 class="font-quantico text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-md">Behind the Code</h1>
+                    <p class="text-blue-100 dark:text-blue-200 text-lg md:text-xl font-nunito max-w-2xl mx-auto">
+                        The story, the mission, and the grind that powers this platform.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission & Vision -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20 items-center">
+            <div class="reveal-element">
+                <h2 class="font-quantico text-3xl font-bold text-brand-blue dark:text-blue-400 mb-6 border-l-4 border-brand-accent pl-4">The Mission</h2>
+                <div class="bg-white dark:bg-dark-card p-8 rounded-xl shadow-md border-t-4 border-brand-blue dark:border-blue-500 text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+                    <p class="mb-4">
+                        <span class="font-bold text-brand-blue dark:text-white">Grind With MT</span> wasn't built in a day. It was forged through late nights, endless debugging sessions, and the relentless pursuit of knowledge.
+                    </p>
+                    <p>
+                        Our goal is simple: <strong>Demystify development</strong>. We believe that coding isn't just for geniuses—it's for anyone willing to put in the work, endure the failures, and celebrate the small victories.
+                    </p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 reveal-element">
+                <div class="bg-blue-50 dark:bg-slate-800 p-6 rounded-xl text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-sm hover:shadow-md">
+                    <i data-lucide="users" class="w-10 h-10 text-brand-accent mx-auto mb-3"></i>
+                    <h3 class="font-quantico font-bold text-lg dark:text-white">Community</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Learning together</p>
+                </div>
+                <div class="bg-blue-50 dark:bg-slate-800 p-6 rounded-xl text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-sm hover:shadow-md">
+                    <i data-lucide="zap" class="w-10 h-10 text-yellow-500 mx-auto mb-3"></i>
+                    <h3 class="font-quantico font-bold text-lg dark:text-white">Speed</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Efficient learning</p>
+                </div>
+                <div class="bg-blue-50 dark:bg-slate-800 p-6 rounded-xl text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-sm hover:shadow-md">
+                    <i data-lucide="shield-check" class="w-10 h-10 text-green-500 mx-auto mb-3"></i>
+                    <h3 class="font-quantico font-bold text-lg dark:text-white">Quality</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Best practices</p>
+                </div>
+                <div class="bg-blue-50 dark:bg-slate-800 p-6 rounded-xl text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-sm hover:shadow-md">
+                    <i data-lucide="coffee" class="w-10 h-10 text-brand-dark dark:text-blue-300 mx-auto mb-3"></i>
+                    <h3 class="font-quantico font-bold text-lg dark:text-white">Grind</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Never stop</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Journey Timeline -->
+        <div class="mb-20">
+            <h2 class="text-center font-quantico text-3xl font-bold text-gray-800 dark:text-white mb-12 reveal-element">The Journey</h2>
+            
+            <div class="relative max-w-4xl mx-auto">
+                <!-- Vertical Line -->
+                <div class="timeline-line bg-gray-200 dark:bg-slate-700"></div>
+
+                <!-- Timeline Item 1 (Left) -->
+                <div class="relative mb-12 md:mb-0 md:h-48 timeline-item reveal-element">
+                    <div class="md:flex items-center justify-between h-full w-full">
+                        <div class="md:w-[45%] mb-4 md:mb-0 md:text-right order-1 bg-white dark:bg-dark-card p-6 rounded-lg shadow-md border-l-4 md:border-l-0 md:border-r-4 border-brand-blue relative z-10">
+                            <h3 class="font-quantico font-bold text-xl text-brand-blue dark:text-blue-400">Hello World</h3>
+                            <span class="text-xs font-bold bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded mb-2 inline-block">2020</span>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Wrote the first line of code. Confused by closures, terrified of the console, but hooked on the feeling of creating something from nothing.</p>
+                        </div>
+                        <div class="absolute left-5 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-10 h-10 bg-brand-blue rounded-full border-4 border-white dark:border-dark-bg z-20 shadow">
+                            <i data-lucide="code" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div class="md:w-[45%] order-2"></div>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2 (Right) -->
+                <div class="relative mb-12 md:mb-0 md:h-48 timeline-item reveal-element">
+                    <div class="md:flex items-center justify-between h-full w-full">
+                        <div class="md:w-[45%] order-1"></div>
+                        <div class="absolute left-5 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-10 h-10 bg-purple-600 rounded-full border-4 border-white dark:border-dark-bg z-20 shadow">
+                            <i data-lucide="flame" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div class="md:w-[45%] mb-4 md:mb-0 order-2 bg-white dark:bg-dark-card p-6 rounded-lg shadow-md border-l-4 border-purple-600 relative z-10">
+                            <h3 class="font-quantico font-bold text-xl text-purple-600 dark:text-purple-400">The Burnout & Breakthrough</h3>
+                            <span class="text-xs font-bold bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded mb-2 inline-block">2022</span>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Hit a wall with advanced frameworks. Took a step back to relearn the fundamentals. Realized that "slow is smooth, smooth is fast."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3 (Left) -->
+                <div class="relative timeline-item reveal-element">
+                    <div class="md:flex items-center justify-between h-full w-full">
+                        <div class="md:w-[45%] mb-4 md:mb-0 md:text-right order-1 bg-white dark:bg-dark-card p-6 rounded-lg shadow-md border-l-4 md:border-l-0 md:border-r-4 border-green-500 relative z-10">
+                            <h3 class="font-quantico font-bold text-xl text-green-600 dark:text-green-400">Grind With MT Launches</h3>
+                            <span class="text-xs font-bold bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded mb-2 inline-block">2024</span>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">Decided to document the journey. Built this platform to share tutorials, snippets, and the reality of the developer lifestyle.</p>
+                        </div>
+                        <div class="absolute left-5 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center w-10 h-10 bg-green-500 rounded-full border-4 border-white dark:border-dark-bg z-20 shadow">
+                            <i data-lucide="rocket" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div class="md:w-[45%] order-2"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tech Stack Scroller (Arsenal & Tools) -->
+        <div class="bg-brand-dark dark:bg-slate-800 rounded-xl p-8 mb-16 text-center shadow-lg reveal-element overflow-hidden relative">
+            <h2 class="font-quantico text-2xl text-white mb-8">Arsenal & Tools</h2>
+            <div class="flex flex-wrap justify-center gap-8 text-gray-300">
+                <div class="flex flex-col items-center gap-2 hover:text-white transition-colors group">
+                    <i data-lucide="file-code" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">HTML5</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 hover:text-white transition-colors group">
+                    <i data-lucide="palette" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">CSS3</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 hover:text-yellow-400 transition-colors group">
+                    <i data-lucide="javascript" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">JavaScript</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 hover:text-blue-400 transition-colors group">
+                    <i data-lucide="wind" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">Tailwind</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 hover:text-green-400 transition-colors group">
+                    <i data-lucide="server" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">Node.js</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 hover:text-orange-400 transition-colors group">
+                    <i data-lucide="git-branch" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">Git</span>
+                </div>
+                <!-- New Tools -->
+                <div class="flex flex-col items-center gap-2 hover:text-blue-500 transition-colors group">
+                    <i data-lucide="shield" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">Kali Linux</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 hover:text-blue-300 transition-colors group">
+                    <i data-lucide="activity" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">Wireshark</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 hover:text-gray-100 transition-colors group">
+                    <i data-lucide="terminal" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">Terminal</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 hover:text-orange-500 transition-colors group">
+                    <i data-lucide="bug" class="w-8 h-8 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">Burpsuite</span>
+                </div>
+            </div>
+            <!-- Decorative circle -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-blue opacity-20 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-brand-accent opacity-20 rounded-full blur-2xl"></div>
+        </div>
+
+        <!-- Author Card -->
+        <div class="max-w-2xl mx-auto bg-white dark:bg-dark-card rounded-2xl shadow-xl overflow-hidden reveal-element border border-gray-100 dark:border-slate-700">
+            <div class="h-32 bg-gradient-to-r from-brand-blue to-brand-accent"></div>
+            <div class="relative px-6 pb-6">
+                <div class="absolute -top-12 left-6">
+                    <div class="w-24 h-24 rounded-full bg-white dark:bg-slate-800 p-1 shadow-lg">
+                        <!-- Profile Image -->
+                        <img src="../Images/Profile.jpg" alt="Manoj Thapa Magar" class="w-full h-full rounded-full object-cover">
+                    </div>
+                </div>
+                <div class="pt-14">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <h2 class="font-quantico text-2xl font-bold text-gray-900 dark:text-white">Manoj Thapa Magar</h2>
+                            <p class="text-brand-blue dark:text-blue-400 font-medium text-sm">Full Stack Developer & Creator</p>
+                        </div>
+                        <!-- Contact Emails -->
+                        <div class="flex flex-col items-start md:items-end gap-1">
+                             <a href="mailto:bbvnr610@proton.me" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-brand-blue dark:hover:text-blue-400 transition-colors flex items-center gap-2">
+                                <i data-lucide="mail" class="w-4 h-4"></i> bbvnr610@proton.me
+                            </a>
+                            <a href="mailto:grindwithmt@gmail.com" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-brand-blue dark:hover:text-blue-400 transition-colors flex items-center gap-2">
+                                <i data-lucide="mail" class="w-4 h-4"></i> grindwithmt@gmail.com
+                            </a>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        I'm a developer passionate about clean code, UI design, and teaching. I built this space to document what I learn and help others skip the hurdles I tripped over. When I'm not coding, I'm probably drinking coffee or debugging life.
+                    </p>
+                    <div class="mt-6 flex gap-4">
+                        <a href="#" class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-pink-600 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="bg-brand-blue dark:bg-slate-900 text-white py-8 mt-auto border-t border-transparent dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0 text-center md:text-left">
+                <p class="font-quantico font-bold text-lg">Grind With MT</p>
+                <p class="text-blue-300 dark:text-slate-400 text-sm">© 2025 All rights reserved.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="github" class="w-5 h-5"></i></a>
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="#" class="text-blue-300 dark:text-slate-400 hover:text-white transition-colors"><i
+                        data-lucide="linkedin" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MAIN SCRIPT (Merged Logic) -->
+    <script>
+        // --- 1. Dark Mode Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const themeIconMobile = document.getElementById('theme-icon-mobile');
+
+        // Check local storage or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            updateIcons('moon');
+        } else {
+            document.documentElement.classList.remove('dark');
+            updateIcons('sun');
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+                updateIcons('sun');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+                updateIcons('moon');
+            }
+        }
+
+        function updateIcons(mode) {
+            const iconName = mode === 'moon' ? 'sun' : 'moon';
+            const newIconHtml = `<i data-lucide="${iconName}" class="w-5 h-5"></i>`;
+
+            if (themeToggleBtn) themeToggleBtn.innerHTML = newIconHtml;
+            if (themeToggleMobile) themeToggleMobile.innerHTML = newIconHtml;
+            
+            // Re-render icons after changing innerHTML
+            if(typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+        if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+
+
+        // --- 2. Mobile Menu Logic ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if(menu) menu.classList.toggle('hidden');
+        }
+
+        // --- 3. Animation Logic (Page Load) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Icons
+            lucide.createIcons();
+
+            // Setup Animation Timeline
+            var tl = anime.timeline({
+                easing: 'easeOutExpo',
+                duration: 750
+            });
+
+            // 1. Drop the Nav
+            tl.add({
+                targets: 'nav',
+                translateY: [-100, 0],
+                opacity: [0, 1],
+                duration: 800
+            })
+            // 2. Reveal Hero
+            .add({
+                targets: '.hero-section',
+                translateY: [20, 0],
+                opacity: [0, 1],
+                duration: 800
+            }, '-=400')
+            // 3. Reveal Standard Elements (Mission, Author)
+            .add({
+                targets: '.reveal-element:not(.timeline-item)',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(150),
+                duration: 800
+            }, '-=200')
+            // 4. Reveal Timeline Items Specifically (Staggered)
+            .add({
+                targets: '.timeline-item',
+                translateX: function(el, i) {
+                    // Alternate slide in from left/right based on index? 
+                    // Keeping it simple with Upward fade for cleaner mobile look
+                    return [0, 0]; 
+                },
+                translateY: [50, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(200),
+                duration: 1000
+            }, '-=600');
+        });
+    </script>
+</body>
+</html>
